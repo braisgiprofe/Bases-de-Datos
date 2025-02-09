@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0  # O usa mariadb:latest si prefieres MariaDB
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: Abc123.       # Cambia esto por una contraseña segura
+      MYSQL_DATABASE: Leliadoura         # Base de datos inicial
+      MYSQL_USER: alumno                 # Usuario inicial
+      MYSQL_PASSWORD: Abc123.            # Contraseña del usuario
+    ports:
+      - "3306:3306"                      # Expone el puerto de MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - db_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db                       # Nombre del servicio de la base de datos
+      PMA_PORT: 3306                     # Puerto de MySQL
+      PMA_ARBITRARY: 0                   # Evita conexiones arbitrarias
+    ports:
+      - "8080:80"                        # Puerto local: Puerto del contenedor
+    depends_on:
+      - db
+    networks:
+      - db_network
+
+
+
+volumes:
+  mysql_data:
+
+networks:
+  db_network:
