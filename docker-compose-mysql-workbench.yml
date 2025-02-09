@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mysql-workbench:
+    image: lscr.io/linuxserver/mysql-workbench:latest
+    container_name: mysql-workbench
+    cap_add:
+      - IPC_LOCK
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /docker/workbench:/config
+    ports:
+      - 3000:3000
+      - 3001:3001
+    restart: unless-stopped
